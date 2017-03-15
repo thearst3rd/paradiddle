@@ -61,18 +61,19 @@ bool Paradiddle::populateOps(istream& input)
 		if (c1 == ' ')
 			break;
 		
-		if (strict && (c1 != (expectingRight ? 'R' : 'L')))
-		{
-			cerr << "Was expecting " << (expectingRight ? 'R' : 'L');
-			cerr << ", found " << c1 << endl;
-			return false;
-		}
-		
 		char c2;
 		c2 = readLegalChar(input);
 		if (c2 == ' ')
 		{
 			cerr << "Found trailing " << c1 << " at EOF" << endl;
+			return false;
+		}
+		
+		if (strict && (c1 != (expectingRight ? 'R' : 'L')))
+		{
+			cerr << "Was expecting " << (expectingRight ? "RR or RL" :
+				"LL or LR");
+			cerr << ", found " << c1 << c2 << endl;
 			return false;
 		}
 		
@@ -98,12 +99,12 @@ bool Paradiddle::populateOps(istream& input)
 		if (diddle)
 		{
 			chainLen++;
+			expectingRight = !expectingRight;
 		}
 		else
 		{
 			this -> addOp(chainLen);
 			chainLen = 0;
-			expectingRight = !expectingRight;
 		}
 	}
 	

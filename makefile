@@ -3,7 +3,7 @@
 
 CFLAGS = -Wall -g0
 
-paradiddle.exe: main.o Paradiddle.o
+paradiddle: main.o Paradiddle.o
 	g++ $(CFLAGS) main.o Paradiddle.o -o paradiddle
 
 main.o: main.cpp Paradiddle.h
@@ -12,7 +12,7 @@ main.o: main.cpp Paradiddle.h
 Paradiddle.o: Paradiddle.cpp Paradiddle.h
 	g++ $(CFLAGS) -c Paradiddle.cpp
 
-all: paradiddle.exe
+all: paradiddle
 
 clean:
-	rm -f *.o *.exe
+	rm -f *.o *.exe paradiddle
