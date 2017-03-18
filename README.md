@@ -18,6 +18,7 @@ The memory model of Paradiddle is a stack. At the start of the program it is emp
 
 Op  | Name | Function
 --- | ---- | --------
+0   | nop  | Do nothing. Useful for branching to program start.
 1   | push | Push the next op to the stack. Do NOT execute the next op.
 2   | add  | Pop b then a off the stack, then push a + b.
 3   | sub  | Pop b then a off the stack, then push a - b. *Note: Order matters.*
@@ -25,8 +26,11 @@ Op  | Name | Function
 5   | div  | Pop b then a off the stack, then push a / b. *Note: Order matters.*
 6   | num  | Pop a value off the stack then output it as a decimal number.
 7   | char | Pop a value off the stack then output it as a char.
-8   | dup  | Duplicate the top value of the stack.
+8   | copy | Push a copy of the top value of the stack.
 9   | pop  | Pop a value from the stack and discard it.
+10  | cond | Pop values n and c. If c is zero, go forward n ops.
+11  | fwd  | Pop a value off the stack and skip that many ops forward.
+12  | bkwd | Pop a value off the stack and go back that many ops.
 
 *Note*: If the program encounters an unknown op, it will simply ignore it.
 

@@ -32,6 +32,10 @@ int main(int argc, char *argv[])
 		{
 			strict = true;
 		}
+		else
+		{
+			cerr << "Unknown command line arg '" << argv[i] << '\'' << endl;
+		}
 	}
 	
 	Paradiddle p(strict);

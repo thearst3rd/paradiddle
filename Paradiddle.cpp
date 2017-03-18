@@ -6,6 +6,7 @@
 
 using std::cerr;
 using std::endl;
+using std::ends;
 using std::stack;
 
 /////////////////////
@@ -123,9 +124,12 @@ void Paradiddle::execute(istream &in, ostream &out)
 	while (pc)
 	{
 		int a, b;
-		switch (pc -> op)
+		int op = pc -> op;
+		switch (op)
 		{
-			case 1:
+			case 0: 	// nop
+				break;
+			case 1: 	// push
 				pc = pc -> next;
 				if (!pc)
 				{
@@ -134,7 +138,7 @@ void Paradiddle::execute(istream &in, ostream &out)
 				}
 				mem.push(pc -> op);
 				break;
-			case 2:
+			case 2: 	// add
 				b = mem.top();
 				mem.pop();
 				a = mem.top();
@@ -142,7 +146,7 @@ void Paradiddle::execute(istream &in, ostream &out)
 				
 				mem.push(a + b);
 				break;
-			case 3:
+			case 3: 	// sub
 				b = mem.top();
 				mem.pop();
 				a = mem.top();
@@ -150,7 +154,7 @@ void Paradiddle::execute(istream &in, ostream &out)
 				
 				mem.push(a - b);
 				break;
-			case 4:
+			case 4: 	// mul
 				b = mem.top();
 				mem.pop();
 				a = mem.top();
@@ -158,7 +162,7 @@ void Paradiddle::execute(istream &in, ostream &out)
 				
 				mem.push(a * b);
 				break;
-			case 5:
+			case 5: 	// div
 				b = mem.top();
 				mem.pop();
 				a = mem.top();
@@ -166,21 +170,46 @@ void Paradiddle::execute(istream &in, ostream &out)
 				
 				mem.push(a / b);
 				break;
-			case 6:
+			case 6: 	// num
 				out << mem.top();
 				mem.pop();
 				break;
-			case 7:
+			case 7: 	// char
 				out << char(mem.top());
 				mem.pop();
 				break;
-			case 8:
+			case 8: 	// copy
 				mem.push(mem.top());
 				break;
-			case 9:
+			case 9: 	// pop
 				mem.pop();
 				break;
+			case 10: 	// cond
+				a = mem.top();
+				mem.pop();
+				b = mem.top();
+				mem.pop();
+				
+				if (b == 0)
+					for (int i = 0; i < a; i++)
+						pc = pc -> next;
+				break;
+			case 11: 	// fwd
+				a = mem.top();
+				mem.pop();
+				
+				for (int i = 0; i < a; i++)
+					pc = pc -> next;
+				break;
+			case 12: 	// bkwd
+				a = mem.top();
+				mem.pop();
+				
+				for (int i = 0; i < a; i++)
+					pc = pc -> prev;
+				break;
 			default:
+				cerr << endl << "Unknown op code " << op << endl;
 				break;
 		}
 		pc = pc -> next;
